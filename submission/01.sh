@@ -3,13 +3,12 @@
 
 set -euo pipefail
 
-BITCOIN_ARGS=()
-if [[ -n "${BITCOIN_DATADIR:-}" ]]; then
-  BITCOIN_ARGS+=(-datadir="$BITCOIN_DATADIR")
-fi
-
 bitcoin-cli() {
-  command bitcoin-cli "${BITCOIN_ARGS[@]}" "$@"
+  if [[ -n "${BITCOIN_DATADIR:-}" ]]; then
+    command bitcoin-cli -datadir="$BITCOIN_DATADIR" "$@"
+  else
+    command bitcoin-cli "$@"
+  fi
 }
 
 if bitcoin-cli -regtest listwallets | grep -q '"btrustwallet"'; then

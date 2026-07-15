@@ -7,18 +7,17 @@
 
 set -euo pipefail
 
-BITCOIN_ARGS=()
-if [[ -n "${BITCOIN_DATADIR:-}" ]]; then
-  BITCOIN_ARGS+=(-datadir="$BITCOIN_DATADIR")
-fi
-
 bitcoin-cli() {
-  command bitcoin-cli "${BITCOIN_ARGS[@]}" "$@"
+  if [[ -n "${BITCOIN_DATADIR:-}" ]]; then
+    command bitcoin-cli -datadir="$BITCOIN_DATADIR" "$@"
+  else
+    command bitcoin-cli "$@"
+  fi
 }
 
 INPUTS='[
-  {"txid":"23c19f37d4e92e9a115aab86e4edc1b92a51add4e0ed0034bb166314dde50e16","vout":0,"sequence":4294967294},
-  {"txid":"23c19f37d4e92e9a115aab86e4edc1b92a51add4e0ed0034bb166314dde50e16","vout":1,"sequence":4294967294}
+  {"txid":"23c19f37d4e92e9a115aab86e4edc1b92a51add4e0ed0034bb166314dde50e16","vout":0,"sequence":4294967293},
+  {"txid":"23c19f37d4e92e9a115aab86e4edc1b92a51add4e0ed0034bb166314dde50e16","vout":1,"sequence":4294967293}
 ]'
 OUTPUTS='[
   {"2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP":0.20000000}
